@@ -11,7 +11,7 @@
             await cheerpjInit();
 
             // Fetch the Jar File from a local path
-            let response = await fetch('/TP-4.jar');
+            let response = await fetch('https://IDE-PFE-S9.github.io/CheerpJDemo/TP-4.jar');
 
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
