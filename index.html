@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>CheerpJ test</title>
+    <script src="https://cjrtnc.leaningtech.com/3.0rc2/cj3loader.js"></script>
+</head>
+<body>
+    <script>
+        (async function () {
+            await cheerpjInit();
+
+            // Fetch the Jar File from a local path
+            let response = await fetch('/TP-4.jar');
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            let jarBlob = await response.blob();
+
+            // Create a new FileReader object
+            let reader = new FileReader();
+
+            // Define a function to be run when the FileReader has finished reading the Blob
+            reader.onloadend = function () {
+                // The result of reading the Blob is available as an ArrayBuffer in reader.result
+                let arrayBuffer = reader.result;
+
+                // Convert the ArrayBuffer to a Uint8Array
+                let uint8Array = new Uint8Array(arrayBuffer);
+
+                // Now you can call cheerpjAddStringFile with the Uint8Array
+                cheerpOSAddStringFile('/str/application.jar', uint8Array);
+            };
+
+            reader.readAsArrayBuffer(jarBlob);
+
+            await cheerpjCreateDisplay(1000, 600);
+            const exitCode = await cheerpjRunJar('/str/application.jar');
+        })();
+    </script>
+    <p id="console">Console : </p>
+</body>
+</html>
